@@ -1,3 +1,7 @@
+[![Dataset on Hugging Face](https://img.shields.io/badge/Hugging%20Face-Dataset-blue)](https://huggingface.co/datasets/alihassan1437/causalrec-bench)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
 # CausalRec-Bench
 
 **A Semi-Synthetic Benchmark for Evaluating Causal Cold-Start Recommendation Under Exposure Bias and Concept Drift**
@@ -13,26 +17,35 @@ Collaborating with Dr. Yan Zhang, Charles Darwin University
 git clone https://github.com/contacthelpious/casbench.git
 cd casbench
 pip install -r requirements.txt
+python download_data.py          # downloads full dataset from Hugging Face
 python benchmark/run_evaluation.py
 ```
 
-All data and pre-trained models are included. No downloads required.
+> **Note:** The full dataset (2.4M interactions, 50k users, 4k items) is hosted on Hugging Face. Run `download_data.py` to fetch it. Pre‑trained models are included in the repository via Git LFS – no extra download required for those.
 
 ---
 
 ## What Is CausalRec-Bench?
 
-The first semi-synthetic benchmark for causal recommendation evaluation with ground-truth causal labels on every interaction. Covers seven evaluation dimensions simultaneously: cold-start, warm users, difficulty levels, seasonal concept drift, cross-domain generalisation, position bias, and causal metric comparison.
+The **first** semi-synthetic benchmark for causal recommendation evaluation with **ground‑truth causal labels on every interaction**. Covers seven evaluation dimensions simultaneously:
+
+- ✅ Cold‑start users  
+- ✅ Warm users  
+- ✅ Progressive difficulty levels (no confounders → all confounders)  
+- ✅ Seasonal concept drift (4 seasons)  
+- ✅ Cross‑domain generalisation (e‑commerce → streaming)  
+- ✅ Position bias isolation  
+- ✅ Causal‑aware vs. standard metric comparison  
 
 | Statistic | Value |
 |-----------|-------|
 | Users | 50,000 |
 | Items | 4,000 (2 domains) |
 | Interactions | 2,468,985 |
-| Domains | E-commerce + Streaming |
+| Domains | E‑commerce + Streaming |
 | Confounders | 5 |
-| Cold-start users | 9,896 (19.8%) |
-| Non-genuine clicks | 70.0% |
+| Cold‑start users | 9,896 (19.8%) |
+| Non‑genuine clicks | 70.0% |
 | Evaluation splits | 18 |
 
 ---
@@ -41,31 +54,31 @@ The first semi-synthetic benchmark for causal recommendation evaluation with gro
 
 | Finding | Scenario | Result |
 |---------|----------|--------|
-| Causal MF vs Standard MF | Cold-Start | **+46.1%** CP@10 |
-| Causal LightGCN vs Standard LightGCN | Level 3 Hard (warm users) | **+31.8%** CP@10 |
-| Non-genuine clicks | Entire benchmark | **70.0%** confounder-driven |
-| Position bias ratio | All interactions | **1.94x** position 1 vs 10 |
-| Promotion bias ratio | All interactions | **1.55x** |
-| Popularity domain collapse | E-commerce cold-start | **0.0000** CP@10 |
-| Graph methods cold-start | Cold-start | **Identical** regardless of causal training |
+| Causal MF vs Standard MF | Cold‑Start | **+46.3%** CP@10 |
+| Causal LightGCN vs Standard LightGCN | Level 3 Hard (warm users) | **+32.0%** CP@10 |
+| Non‑genuine clicks | Entire benchmark | **70.0%** confounder‑driven |
+| Position bias ratio | All interactions | **1.94×** (position 1 vs 10) |
+| Promotion bias ratio | All interactions | **1.55×** |
+| Popularity domain collapse | E‑commerce cold‑start | **0.0000** CP@10 |
+| Graph methods cold‑start | Zero‑history users | **Identical** regardless of causal training |
 
 ---
 
 ## Five Confounders
 
-| Confounder | Effect | Measured Ratio |
-|------------|--------|----------------|
-| Promotion bias | +40% exposure, +15% click | 1.55x |
-| Popularity bias | +30% exposure, +12% click | — |
-| Position bias (novel) | +25% at position 1, decays to +1% at position 10 | 1.94x |
-| Seasonal concept drift | Winter +15% books, Summer +15% outdoor | Validated |
-| New item penalty | -20% exposure for new items | Validated |
+| Confounder | Simulation Mechanism | Measured Effect |
+|------------|----------------------|------------------|
+| **Promotion bias** | +40% exposure; +15% click multiplier | 1.55× click rate |
+| **Popularity bias** | Social proof by popularity tier | — |
+| **Position bias (novel)** | +25% at pos 1 → +1% at pos 10 | **1.94×** (pos 1 vs 10) |
+| **Seasonal concept drift** | Winter +15% books; Summer +15% outdoor | Validated |
+| **New item penalty** | −20% exposure for new items | Validated |
 
 ---
 
-## Causal Ground-Truth Labels
+## Causal Ground‑Truth Labels
 
-Every interaction includes a `click_cause` label — unavailable in any existing public recommendation dataset:
+Every interaction includes a `click_cause` label – **unavailable in any existing public recommendation dataset**:
 
 | Label | Meaning |
 |-------|---------|
@@ -80,28 +93,24 @@ Every interaction includes a `click_cause` label — unavailable in any existing
 
 ## Complete Results — All 6 Models, All Scenarios
 
-### Category Precision@10
+### Category Precision@10 (CP@10)
 
-| Model | Cold-Start | Level 3 Hard | Level 1 Simple | Winter CS | Summer CS | E-com CS | Stream CS |
-|-------|-----------|--------------|----------------|-----------|-----------|----------|----------|
-| Popularity | 0.2462 | 0.2463 | 0.1058 | 0.2230 | 0.2732 | 0.0000 | 0.3865 |
+| Model | Cold‑Start | Level 3 Hard | Level 1 Simple | Winter CS | Summer CS | E‑com CS | Stream CS |
+|-------|------------|--------------|----------------|-----------|-----------|----------|-----------|
+| Popularity | 0.2462 | 0.2463 | 0.1058 | 0.2230 | 0.2732 | **0.0000** | 0.3865 |
 | Standard MF | 0.2835 | 0.2900 | 0.1183 | 0.2869 | 0.2853 | 0.1696 | 0.2679 |
-| **Causal MF** | **0.4140** | **0.4241** | **0.1852** | **0.4156** | **0.4146** | **0.3853** | 0.3037 |
+| **Causal MF** ↑ | **0.4140** | **0.4241** | 0.1852 | **0.4156** | **0.4146** | **0.3853** | 0.3037 |
 | Standard LightGCN | 0.5480 | 0.5474 | 0.2393 | 0.5574 | 0.5528 | 0.5044 | 0.3816 |
-| **Causal LightGCN** | 0.5480 | **0.7216** | **0.3584** | 0.5574 | 0.5528 | 0.5044 | 0.3816 |
-| Causal Upper Bound | 0.5480 | 0.5508 | 0.2386 | 0.5574 | 0.5528 | 0.5044 | 0.3816 |
+| **Causal LightGCN** ↑ | 0.5480 | **0.7216** | **0.3584** | 0.5574 | 0.5528 | 0.5044 | 0.3816 |
 
-CS = Cold-Start
+*CS = Cold‑Start, ↑ = causal variant, **bold** = best non‑oracle result per column*
 
-### Key Observations From Results Table
+### Key Observations
 
-**Causal MF consistently beats Standard MF across ALL scenarios** — cold-start, warm users, seasonal splits, and domain splits. This is not limited to one scenario.
-
-**Causal LightGCN dramatically improves warm user recommendation** — +31.8% on Level 3 Hard while producing identical cold-start results, revealing a structural limitation of graph methods for unseen users.
-
-**Popularity completely fails on e-commerce cold-start** (0.0000) because the globally popular items are all streaming items — demonstrating the cross-domain generalisation problem.
-
-**Standard metrics mislead** — on Level 3 Hard, Standard MF achieves P@10=0.0281 and NDCG@10=0.0299 which appears competitive with Causal LightGCN (P@10=0.0195). But on Category Precision the gap is massive: 0.2900 vs 0.7216.
+- **Causal MF** consistently beats Standard MF across **all** scenarios (cold‑start, warm users, seasons, domains).
+- **Causal LightGCN** gives +31.8% on warm users (Level 3 Hard) but **identical cold‑start results** – revealing a structural limitation of graph methods for unseen users.
+- **Popularity completely fails** on e‑commerce cold‑start (0.0000) because globally popular items are all streaming – demonstrating the cross‑domain generalisation problem.
+- **Standard metrics mislead:** On Level 3 Hard, Standard MF achieves P@10=0.0281 and NDCG@10=0.0299 (seems competitive with Causal LightGCN), but on **Category Precision** the gap is massive (0.2900 vs 0.7216).
 
 ---
 
@@ -109,12 +118,12 @@ CS = Cold-Start
 
 | Category | Splits | Purpose |
 |----------|--------|---------|
-| Standard | train / val / test | Baseline evaluation |
-| Cold-start | cold_start | Zero-history users |
-| Difficulty | level1 / level2 / level3 | Progressive confounder complexity |
-| Seasonal | winter / summer / autumn / spring | Concept drift evaluation |
-| Domain | ecom_cold / stream_cold | Cross-domain generalisation |
-| Position | high_position / low_position | Position bias isolation |
+| Standard | `train` / `val` / `test` | Baseline evaluation |
+| Cold‑start | `cold_start` | Zero‑history users |
+| Difficulty | `level1_simple` / `level2_medium` / `level3_hard` | Progressive confounder complexity |
+| Seasonal | `winter` / `summer` / `autumn` / `spring` cold‑start | Concept drift evaluation |
+| Domain | `ecom_cold` / `stream_cold` | Cross‑domain generalisation |
+| Position | `high_position` / `low_position` | Position bias isolation |
 
 ---
 
@@ -142,7 +151,7 @@ python benchmark/generate_charts.py
 from evaluation.metrics import evaluate_model
 import pandas as pd
 
-# Load any evaluation split
+# Load any evaluation split (downloaded via download_data.py)
 cold_start = pd.read_csv('data/cold_start.csv')
 users = pd.read_csv('data/users.csv')
 items = pd.read_csv('data/items.csv')
@@ -167,40 +176,48 @@ print(results)
 
 ---
 
-## Pre-trained Models
-pretrained_models/
-fmf_std_U.npy    Standard MF user embeddings  (35,000 x 32)
-fmf_std_V.npy    Standard MF item embeddings  (4,000 x 32)
-fmf_caus_U.npy   Causal MF user embeddings    (35,000 x 32)
-fmf_caus_V.npy   Causal MF item embeddings    (4,000 x 32)
-lgcn_std.pt      Standard LightGCN weights    (2.5M parameters)
-lgcn_caus.pt     Causal LightGCN weights      (2.5M parameters)
+## Pre‑trained Models
 
-Training details:
-- Standard models: 575,553 training clicks
-- Causal models: 172,870 genuine clicks (402,683 biased removed)
-- LightGCN: 50 epochs, embedding dim 64, 3 propagation layers
+All pre‑trained models are stored via **Git LFS** and included in this repository:
+
+| File | Description | Shape / Size |
+|------|-------------|---------------|
+| `pretrained_models/fmf_std_U.npy` | Standard MF user embeddings | 35,000 × 32 |
+| `pretrained_models/fmf_std_V.npy` | Standard MF item embeddings | 4,000 × 32 |
+| `pretrained_models/fmf_caus_U.npy` | Causal MF user embeddings | 35,000 × 32 |
+| `pretrained_models/fmf_caus_V.npy` | Causal MF item embeddings | 4,000 × 32 |
+| `pretrained_models/lgcn_std.pt` | Standard LightGCN weights | 2.5M parameters |
+| `pretrained_models/lgcn_caus.pt` | Causal LightGCN weights | 2.5M parameters |
+
+**Training details:**
+- Standard models: 575,553 training clicks  
+- Causal models: 172,870 genuine clicks (402,683 biased removed)  
+- LightGCN: 50 epochs, embedding dim 64, 3 propagation layers  
 - Item embedding divergence between standard and causal: 0.5126
 
 ---
 
 ## Project Structure
+
+```
 casbench/
 ├── README.md
 ├── requirements.txt
-├── data/                      18 evaluation splits (all included)
-├── pretrained_models/         6 trained model files (all included)
-├── results/                   Evaluation results CSV
-├── figures/                   Publication quality charts
+├── download_data.py               # fetches dataset from Hugging Face
+├── data/                          # 18 evaluation splits (after download)
+├── pretrained_models/             # 6 trained model files (via LFS)
+├── results/                       # evaluation results CSV
+├── figures/                       # publication‑quality charts
 ├── benchmark/
-│   ├── generate_benchmark.py  Regenerate data from scratch
-│   ├── train_models.py        Train all models from scratch
-│   ├── run_evaluation.py      Run full evaluation
-│   └── generate_charts.py     Generate publication figures
+│   ├── generate_benchmark.py      # regenerate data from scratch
+│   ├── train_models.py            # train all models from scratch
+│   ├── run_evaluation.py          # run full evaluation
+│   └── generate_charts.py         # generate publication figures
 ├── models/
-│   └── fast_mf.py             Vectorised FastMF implementation
+│   └── fast_mf.py                 # vectorised FastMF implementation
 └── evaluation/
-└── metrics.py             Standard + causal evaluation metrics
+    └── metrics.py                 # standard + causal evaluation metrics
+```
 
 ---
 
@@ -214,8 +231,7 @@ casbench/
   author    = {Hassan, Ali},
   booktitle = {Proceedings of the CONSEQUENCES Workshop at ACM RecSys 2026},
   year      = {2026},
-  note      = {Collaborating with Dr. Yan Zhang,
-               Charles Darwin University}
+  note      = {Collaborating with Dr. Yan Zhang, Charles Darwin University}
 }
 ```
 
@@ -223,4 +239,16 @@ casbench/
 
 ## License
 
-Code: MIT License | Dataset: CC BY 4.0 | Pre-trained Models: CC BY 4.0
+- **Code:** MIT License  
+- **Dataset:** CC BY 4.0  
+- **Pre‑trained Models:** CC BY 4.0
+
+---
+
+## Links
+
+- 📦 **Hugging Face Dataset:** [alihassan1437/causalrec-bench](https://huggingface.co/datasets/alihassan1437/causalrec-bench)
+- 🐙 **GitHub Repository:** [contacthelpious/casbench](https://github.com/contacthelpious/casbench)
+```
+
+Copy the entire block above into your `README.md` file. It will render perfectly on GitHub.
