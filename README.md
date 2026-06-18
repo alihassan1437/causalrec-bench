@@ -70,7 +70,7 @@ The **first** semi‑synthetic benchmark for causal recommendation evaluation wi
 |------------|----------------------|------------------|
 | **Promotion bias** | +40% exposure; +15% click multiplier | 1.55× click rate |
 | **Popularity bias** | Social proof by popularity tier | — |
-| **Position bias (novel)** | +25% at pos 1 → +1% at pos 10 | **1.94×** (pos 1 vs 10) |
+| **Position bias (novel)** | +25% at pos 1 → +1% at pos 10 | **1.94×** (pos 1 vs 10) |
 | **Seasonal concept drift** | Winter +15% books; Summer +15% outdoor | Validated |
 | **New item penalty** | −20% exposure for new items | Validated |
 
@@ -95,7 +95,7 @@ Every interaction includes a `click_cause` label – **unavailable in any existi
 
 ### Category Precision@10 (CP@10)
 
-| Model | Cold‑Start | Level 3 Hard | Level 1 Simple | Winter CS | Summer CS | E‑com CS | Stream CS |
+| Model | Cold‑Start | Level 3 Hard | Level 1 Simple | Winter CS | Summer CS | E‑com CS | Stream CS |
 |-------|------------|--------------|----------------|-----------|-----------|----------|-----------|
 | Popularity | 0.2462 | 0.2463 | 0.1058 | 0.2230 | 0.2732 | 0.0000 | 0.3865 |
 | Standard MF | 0.2835 | 0.2900 | 0.1183 | 0.2869 | 0.2853 | 0.1696 | 0.2679 |
