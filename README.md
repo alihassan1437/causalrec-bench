@@ -15,8 +15,8 @@ Collaborating with Dr. Yan Zhang, Charles Darwin University
 ## Quick Start — 3 Commands
 
 ```bash
-git clone https://github.com/contacthelpious/casbench.git
-cd casbench
+git clone https://github.com/alihassan1437/causalrec-bench.git
+cd causalrec-bench
 pip install -r requirements.txt
 python download_data.py          # downloads full dataset from Hugging Face
 python benchmark/run_evaluation.py
@@ -192,7 +192,7 @@ Pre‑trained models are fetched by `download_data.py` into `pretrained_models/`
 ## Project Structure (after running `download_data.py`)
 
 ```
-casbench/
+causalrec-bench/
 ├── README.md
 ├── requirements.txt
 ├── download_data.py
@@ -246,4 +246,4 @@ casbench/
 ## Links
 
 - 📦 **Hugging Face Dataset:** [alihassan1437/causalrec-bench](https://huggingface.co/datasets/alihassan1437/causalrec-bench)
-- 🐙 **GitHub Repository:** [contacthelpious/casbench](https://github.com/contacthelpious/casbench)
+- 🐙 **GitHub Repository:** [alihassan1437/causalrec-bench](https://github.com/alihassan1437/causalrec-bench)
